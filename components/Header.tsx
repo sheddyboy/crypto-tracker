@@ -1,5 +1,6 @@
 "use client";
-import { CryptoCtx } from "@/context/CryptoContext";
+import { useAppDispatch, useAppSelector } from "@/redux/app/hook";
+import { setCurrency } from "@/redux/features/Coin/coinSlice";
 import {
   AppBar,
   Container,
@@ -11,12 +12,12 @@ import {
   createTheme,
 } from "@mui/material";
 import Link from "next/link";
-import { useContext } from "react";
 
 interface HeaderProps {}
 
 export default function Header({}: HeaderProps) {
-  const { currency, setCurrentCurrency } = useContext(CryptoCtx);
+  const dispatch = useAppDispatch();
+  const { currency } = useAppSelector((state) => state.coinSlice);
   const darkTheme = createTheme({
     palette: {
       mode: "dark",
@@ -39,7 +40,9 @@ export default function Header({}: HeaderProps) {
               variant="outlined"
               sx={{ width: 100, height: 40, mr: "15px" }}
               value={currency.name}
-              onChange={(e) => setCurrentCurrency(e.target.value)}
+              onChange={(e) => {
+                dispatch(setCurrency({ name: e.target.value }));
+              }}
             >
               <MenuItem value="USD">USD</MenuItem>
               <MenuItem value="NGN">NGN</MenuItem>

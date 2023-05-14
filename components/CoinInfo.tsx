@@ -1,9 +1,7 @@
 "use client";
-import { CryptoCtx } from "@/context/CryptoContext";
-import useHistoricalData from "@/hooks/useHistoricalData";
 import { SingleCoinsData } from "@/type";
 import { CircularProgress, ThemeProvider, createTheme } from "@mui/material";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -15,6 +13,8 @@ import {
 
 import { Line } from "react-chartjs-2";
 import SelectButton from "./SelectButton";
+import { useAppSelector } from "@/redux/app/hook";
+import { useGetHistoricalDataQuery } from "@/redux/features/Coin/coinApi";
 
 interface CoinInfoProps {
   coin: SingleCoinsData;
@@ -45,9 +45,13 @@ export default function CoinInfo({ coin }: CoinInfoProps) {
     LineElement,
     Tooltip
   );
-  const { currency } = useContext(CryptoCtx);
   const [days, setDays] = useState(30);
-  const { data: historicalData } = useHistoricalData({ coin, days });
+  const { currency } = useAppSelector((state) => state.coinSlice);
+  const { data: historicalData } = useGetHistoricalDataQuery({
+    currency: currency.name,
+    days,
+    id: coin.id,
+  });
   const darkTheme = createTheme({
     palette: {
       primary: {

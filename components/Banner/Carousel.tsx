@@ -1,21 +1,19 @@
 "use client";
-
-import useTrendingCoins from "@/hooks/useTrendingCoins";
 import Image from "next/image";
 import Link from "next/link";
 import { Autoplay } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/autoplay";
-import { useContext } from "react";
-import { CryptoCtx } from "@/context/CryptoContext";
 import { numberWithCommas } from "@/helpers";
+import { useGetTrendingCoinsQuery } from "@/redux/features/Coin/coinApi";
+import { useAppSelector } from "@/redux/app/hook";
 
 interface CarouselProps {}
 
 export default function Carousel({}: CarouselProps) {
-  const { currency } = useContext(CryptoCtx);
-  const { data: coins } = useTrendingCoins();
+  const { currency } = useAppSelector((state) => state.coinSlice);
+  const { data: coins } = useGetTrendingCoinsQuery({ currency: currency.name });
 
   return (
     <div className=" h-1/2 flex items-center">

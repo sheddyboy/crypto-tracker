@@ -1,7 +1,7 @@
 import { montserrat } from "@/fonts";
 import "./globals.css";
 import Header from "@/components/Header";
-import CryptoContext from "@/context/CryptoContext";
+import ReduxProvider from "@/redux/ReduxProvider";
 
 export const metadata = {
   title: "Crypto Tracker",
@@ -16,10 +16,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={montserrat.variable}>
       <body className=" bg-[#14161a] text-white min-h-screen">
-        <CryptoContext>
+        <ReduxProvider>
           <Header />
           {children}
-        </CryptoContext>
+        </ReduxProvider>
       </body>
     </html>
   );

@@ -2,20 +2,19 @@
 import CoinInfo from "@/components/CoinInfo";
 import Image from "next/image";
 import Typography from "@mui/material/Typography";
-import { useContext } from "react";
-import { CryptoCtx } from "@/context/CryptoContext";
 import { numberWithCommas } from "@/helpers";
-import useSingleCoin from "@/hooks/useSingleCoin";
 import { CircularProgress } from "@mui/material";
 import parse from "html-react-parser";
+import { useAppSelector } from "@/redux/app/hook";
+import { useGetSingleCoinQuery } from "@/redux/features/Coin/coinApi";
 
 interface pageProps {
   params: { id: string };
 }
 
 export default function CoinPage({ params }: pageProps) {
-  const { data: coin } = useSingleCoin(params.id);
-  const { currency } = useContext(CryptoCtx);
+  const { currency } = useAppSelector((state) => state.coinSlice);
+  const { data: coin, isLoading } = useGetSingleCoinQuery({ id: params.id });
   return (
     <div className="flex max-md:flex-col max-md:items-center">
       <div className="w-[30%] flex flex-col items-center mt-[25px] border-r-[2px] border-r-[grey] max-md:w-[100%]">
